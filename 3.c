@@ -59,7 +59,7 @@ void main() {
 
     if ((array = calloc(size, sizeof(char*))) == NULL) handleMallocError();
 
-    char tmpStr[20] = {0};
+    char tmpStr[100] = {0};
     for (long i = 0; i < size; i++) {
         int flag = 0;
         do {
