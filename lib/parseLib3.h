@@ -25,6 +25,9 @@ size_t readLine(char** string, size_t* size);
 size_t readLineWithDialog(char** array, const char* massege, size_t* length);
 size_t readYNWithDialog(const char* str, int * res);
 size_t readUDWithDialog(const char* str, int * res);
+size_t readLineWithDialogWithoutNewLine(char** array, const char* massege, size_t* length);
+
+
 
 long parseLong(char* startPtr, char** endPtr);
 size_t parseMultLong(long** array, char separator, char* inputString, size_t* count);

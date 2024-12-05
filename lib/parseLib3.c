@@ -1,6 +1,5 @@
 #include "parseLib3.h"
 
-
 void handleMallocError() {
     puts("MALLOC ERROR.");
     exit(1);
@@ -61,6 +60,19 @@ size_t getLine(char** string, size_t* size, FILE* stream) {
     }
     return 0;
 }
+size_t readLineWithDialogWithoutNewLine(char** array, const char* massege, size_t* length) {
+    size_t error = 0;
+    if (length) {
+        
+    }
+    else{
+        size_t len = 0;
+        if (error = readLineWithDialog(array, massege, &len)) return error;
+        (*array)[len - 2] = '\0';
+    }
+
+    return 0;
+}
 
 long parseLong(char* startPtr, char** endPtr) {
     long result = 0;
@@ -105,7 +117,10 @@ size_t readLong(long* ptr) {
     char* str = NULL;
     size_t errorTmp = 0;
     if (errorTmp = getLine(&str, NULL, stdin)) return errorTmp;
-    if (!isValidString(str, isValidIntString)) {free(str); return ERINVALIDUERINPUT;}
+    if (!isValidString(str, isValidIntString)) {
+        free(str);
+        return ERINVALIDUERINPUT;
+    }
 
     *ptr = parseLong(str, NULL);
     free(str);
@@ -170,7 +185,10 @@ size_t readMultLong(long** array, char separator, size_t* count) {
     char* str = NULL;
     size_t tmpError = 0;
     if (tmpError = getLine(&str, NULL, stdin)) return tmpError;
-    if (tmpError = parseMultLong(array, separator, str, count)) {free(str);return tmpError;}
+    if (tmpError = parseMultLong(array, separator, str, count)) {
+        free(str);
+        return tmpError;
+    }
     free(str);
     return 0;
 }
@@ -186,16 +204,14 @@ size_t readMultLongWithDialog(long** array, char separator, const char* massege,
             if (tmpError == ERTOOLONG) puts("Some Number has too many digits");
             if (tmpError == ERINVALIDUERINPUT) puts("Input format error. Reread description and try again.");
 
-
             if (tmpError == ERMALLOC) return ERMALLOC;
-
         }
 
     } while (tmpError);
     return 0;
 }
 
-size_t readLongWithDialog(long* ptr, char * messege){
+size_t readLongWithDialog(long* ptr, char* messege) {
     size_t tmpError = 0;
     do {
         puts(messege);
@@ -206,15 +222,12 @@ size_t readLongWithDialog(long* ptr, char * messege){
             if (tmpError == ERTOOLONG) puts("Number has too many digits");
             if (tmpError == ERINVALIDUERINPUT) puts("Input format error. Reread description and try again.");
 
-
             if (tmpError == ERMALLOC) return ERMALLOC;
-
         }
 
     } while (tmpError);
     return 0;
 }
-
 
 double parseDouble(char* startPtr, char** endPtr) {
     double result = 0;
@@ -266,18 +279,23 @@ double parseDouble(char* startPtr, char** endPtr) {
 size_t readDouble(double* ptr) {
     char* str = NULL;
     size_t errorTmp = 0;
-    if (errorTmp = getLine(&str, NULL, stdin)) { return errorTmp;}
-    if (!isValidString(str, isValidDoubleStringChar)) {free(str); return ERINVALIDUERINPUT;}
+    if (errorTmp = getLine(&str, NULL, stdin)) {
+        return errorTmp;
+    }
+    if (!isValidString(str, isValidDoubleStringChar)) {
+        free(str);
+        return ERINVALIDUERINPUT;
+    }
 
     *ptr = parseLong(str, NULL);
     free(str);
     if (errno == ERANGE) return EROUTOFRANGE;
     if (errno == EINVAL) return ERINVALIDUERINPUT;
-    
+
     return 0;
 }
 
-size_t parseMultDouble(double** array, char separator, char* inputString, size_t * count) {
+size_t parseMultDouble(double** array, char separator, char* inputString, size_t* count) {
     if (separator == '.') return ERINVALIDARG;
     if (!isValidString_c(inputString, isValidDoubleStringChar, separator)) return ERINVALIDUERINPUT;
 
@@ -317,7 +335,6 @@ size_t parseMultDouble(double** array, char separator, char* inputString, size_t
 
         tmpPtr1 = tmpPtr2 + 1 + i;
     }
-    
 
     if (counter == ULONG_MAX) return ERTOOLONG;
 
@@ -330,17 +347,19 @@ size_t parseMultDouble(double** array, char separator, char* inputString, size_t
     return 0;
 }
 
-size_t readMultDouble(double** array, char separator, size_t * count) {
+size_t readMultDouble(double** array, char separator, size_t* count) {
     char* str = NULL;
     size_t tmpError = 0;
-    if (tmpError = getLine(&str, NULL, stdin))  return tmpError;
-    if (tmpError = parseMultDouble(array, separator, str, count)) {free(str);return tmpError;}
+    if (tmpError = getLine(&str, NULL, stdin)) return tmpError;
+    if (tmpError = parseMultDouble(array, separator, str, count)) {
+        free(str);
+        return tmpError;
+    }
     free(str);
     return 0;
 }
 
-size_t readMultDoubleWithDialog(double** array, char separator, const char* massege, size_t * count) {
-
+size_t readMultDoubleWithDialog(double** array, char separator, const char* massege, size_t* count) {
     size_t tmpError = 0;
     do {
         puts(massege);
@@ -351,16 +370,14 @@ size_t readMultDoubleWithDialog(double** array, char separator, const char* mass
             if (tmpError == ERTOOLONG) puts("Some Number has too many digits");
             if (tmpError == ERINVALIDUERINPUT) puts("Input format error. Reread description and try again.");
 
-
             if (tmpError == ERMALLOC) return ERMALLOC;
-
         }
 
     } while (tmpError);
     return 0;
 }
 
-size_t readDoubleWithDialog(double* ptr, char * messege){
+size_t readDoubleWithDialog(double* ptr, char* messege) {
     size_t tmpError = 0;
     do {
         puts(messege);
@@ -371,7 +388,6 @@ size_t readDoubleWithDialog(double* ptr, char * messege){
             if (tmpError == ERTOOLONG) puts("Number has too many digits");
             if (tmpError == ERINVALIDUERINPUT) puts("Input format error. Reread description and try again.");
 
-
             if (tmpError == ERMALLOC) return ERMALLOC;
         }
 
@@ -379,10 +395,11 @@ size_t readDoubleWithDialog(double* ptr, char * messege){
     return 0;
 }
 
-
-size_t readLine(char** string, size_t* size){
+size_t readLine(char** string, size_t* size) {
     size_t errorTmp = 0;
-    if (errorTmp = getLine(string, size, stdin)) { return errorTmp;}    
+    if (errorTmp = getLine(string, size, stdin)) {
+        return errorTmp;
+    }
     return 0;
 }
 size_t readLineWithDialog(char** array, const char* massege, size_t* length) {
@@ -394,22 +411,23 @@ size_t readLineWithDialog(char** array, const char* massege, size_t* length) {
 
             if (tmpError == ERTOOLONG) puts("The string is too long.");
             if (tmpError == ERMALLOC) return ERMALLOC;
-
         }
 
     } while (tmpError);
     return 0;
 }
 
-//some v1 junk
-size_t readYNWithDialog(const char* str, int * res) {
+// some v1 junk
+size_t readYNWithDialog(const char* str, int* res) {
     size_t errorTmp = 0;
-    char * answ1 = NULL;
+    char* answ1 = NULL;
     int flag = 0;
     do {
         flag = 0;
         puts(str);
-        if (errorTmp = readLine(&answ1, NULL)) { return errorTmp;}  
+        if (errorTmp = readLine(&answ1, NULL)) {
+            return errorTmp;
+        }
 
         if (answ1[0] != 'Y' && answ1[0] != 'N' && answ1[0] != 'y' && answ1[0] != 'n' || answ1[1] != '\n') {
             flag = 1;
@@ -421,14 +439,16 @@ size_t readYNWithDialog(const char* str, int * res) {
     return 0;
 }
 
-size_t readUDWithDialog(const char* str, int * res) {
+size_t readUDWithDialog(const char* str, int* res) {
     size_t errorTmp = 0;
-    char * answ1 = NULL;
+    char* answ1 = NULL;
     int flag = 0;
     do {
         flag = 0;
         puts(str);
-        if (errorTmp = readLine(&answ1, NULL)) { return errorTmp;}  
+        if (errorTmp = readLine(&answ1, NULL)) {
+            return errorTmp;
+        }
 
         if (answ1[0] != 'U' && answ1[0] != 'D' && answ1[0] != 'u' && answ1[0] != 'd' || answ1[1] != '\n') {
             flag = 1;
@@ -451,7 +471,10 @@ void fill2DArrayByHand(double** inputArray, unsigned rowCount, unsigned columnCo
             if (readMultDoubleWithDialog(inputArray + i, ',', tmpStr, &count)) handleMallocError();
 
             for (size_t k = 0; k < count; k++) {
-                if (validator && validator(inputArray[i][k])) {passFlag = 1; break;}
+                if (validator && validator(inputArray[i][k])) {
+                    passFlag = 1;
+                    break;
+                }
             }
 
             if (count != columnCount) {

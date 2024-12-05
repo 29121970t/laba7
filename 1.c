@@ -64,6 +64,8 @@ int isWord(char* str) {
     return 1;
 }
 
+
+
 void main() {
     char* inputStr = NULL;
     char* word1 = NULL;
@@ -75,37 +77,35 @@ void main() {
     size_t offset1 = 0;
     size_t offset2 = 0;
     int flag = 0;
-    size_t inputStrLength = 0;
-
-    if (readLineWithDialog(&inputStr, "Please enter main string.", &inputStrLength)) handleMallocError();
-    inputStr[inputStrLength - 2] = '\0';
+    size_t tmpLength = 0;
 
     do {
         flag = 0;
-        size_t wordLength = 0;
+        if (readLineWithDialogWithoutNewLine(&inputStr, "Please enter main string.", &tmpLength)) handleMallocError();
+        if (!flag && (flag = tmpLength < 2)) puts("Main string should have at least 1 word.");
+    } while (flag);
 
-        if (readLineWithDialog(&word1, "Please enter first word.", &wordLength)) handleMallocError();
-        word1[wordLength - 2] = '\0';
-
+    do {
+        flag = 0;
+        if (readLineWithDialogWithoutNewLine(&word1, "Please enter first word.", &tmpLength)) handleMallocError();
+        if (!flag && (flag = tmpLength < 2)) puts("Word should have at least 1 non-spece charecter.");
         if (!flag && (flag = !isWord(word1))) puts("Got not a word. (Remove spaces.)");
     } while (flag);
 
     do {
         flag = 0;
-        size_t wordLength = 0;
         if (readLongWithDialog(&k, "Please enter first Index k. (A number > 0)")) handleMallocError();
         if (flag = k <= 0) puts("Number should be > 0");
-        if (!flag && (flag = getWordOffsetByIndex(inputStr, k - 1, &offset1, NULL))) puts("Main string has less words then provided number.");
+        if (!flag && (flag = getWordOffsetByIndex(inputStr, k - 1, &offset1, NULL)))
+            puts("Main string has less words then provided number.");
     } while (flag);
 
     if (changeWordByOffset(inputStr, offset1, word1)) handleMallocError();
 
-
     do {
         flag = 0;
-        size_t wordLength = 0;
-        if (readLineWithDialog(&word2, "Please enter second word.", &wordLength)) handleMallocError();
-        word2[wordLength - 2] = '\0';
+        if (readLineWithDialogWithoutNewLine(&word2, "Please enter second word.", &tmpLength)) handleMallocError();
+        if (!flag && (flag = tmpLength < 2)) puts("Word should have at least 1 non-spece charecter.");
         if (flag = !isWord(word2)) puts("Got not a word. (Remove spaces.)");
     } while (flag);
 
@@ -115,7 +115,8 @@ void main() {
         if (readLongWithDialog(&m, "Please enter second Index m. (A number > 0)")) handleMallocError();
         if (flag = m <= 0) puts("Number should be > 0");
         if (m == k) puts("WARNING: m = k. The k-th word will be replaced with <second word>");
-        if (!flag && (flag = getWordOffsetByIndex(inputStr, m - 1, &offset2, &wordLength))) puts("Main string has less words then provided number.");
+        if (!flag && (flag = getWordOffsetByIndex(inputStr, m - 1, &offset2, NULL)))
+            puts("Main string has less words then provided number.");
 
     } while (flag);
 
