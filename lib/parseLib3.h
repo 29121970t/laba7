@@ -7,6 +7,8 @@
 #include "randomLib.h"
 
 
+typedef enum ErrorCode { ERMALLOC = 1, EROUTOFRANGE, ERTOOLONG, ERINVALIDARG, ERINVALIDUERINPUT } ErrorCode;
+
 void handleMallocError();
 
 int isDigit(char c);
@@ -20,6 +22,7 @@ int isValidString_l(char* str, size_t length, int (*validator)(char));
 
 size_t getLine(char** string, size_t* size, FILE* stream);
 size_t readLine(char** string, size_t* size);
+size_t readLineWithDialog(char** array, const char* massege, size_t* length);
 size_t readYNWithDialog(const char* str, int * res);
 size_t readUDWithDialog(const char* str, int * res);
 

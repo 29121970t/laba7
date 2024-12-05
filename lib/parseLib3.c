@@ -1,6 +1,5 @@
 #include "parseLib3.h"
 
-enum { ERMALLOC = 1, EROUTOFRANGE, ERTOOLONG, ERINVALIDARG, ERINVALIDUERINPUT, ERUNKNOWN };
 
 void handleMallocError() {
     puts("MALLOC ERROR.");
@@ -386,6 +385,22 @@ size_t readLine(char** string, size_t* size){
     if (errorTmp = getLine(string, size, stdin)) { return errorTmp;}    
     return 0;
 }
+size_t readLineWithDialog(char** array, const char* massege, size_t* length) {
+    size_t tmpError = 0;
+    do {
+        puts(massege);
+        if (tmpError = readLine(array, length)) {
+            puts("Error occured.");
+
+            if (tmpError == ERTOOLONG) puts("The string is too long.");
+            if (tmpError == ERMALLOC) return ERMALLOC;
+
+        }
+
+    } while (tmpError);
+    return 0;
+}
+
 //some v1 junk
 size_t readYNWithDialog(const char* str, int * res) {
     size_t errorTmp = 0;
